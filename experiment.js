@@ -211,6 +211,18 @@ var start_control_block = {
     timing_post_trial: 1000
 };
 
+var outro_test_block = {
+    type: 'poldrack-text',
+    is_html: true,
+    data: {
+        trial_id: "test_outro"
+    },
+    timing_stim: 2000,
+    timing_response: 2000,
+    timing_post_trial: 0,
+    text: '<div class = centerbox><div class="img-container"><img src="images/outro.jpg" alt="Молодец"></div></div>',
+};
+
 //Setup 1-back practice
 practice_trials = []
 for (var i = 0; i < (num_practice_trials); i++) {
@@ -333,5 +345,6 @@ for (var d = 0; d < delays.length; d++) {
 // 	n_back_experiment.push(start_control_block)
 // 	n_back_experiment = n_back_experiment.concat(control_trials)
 // }
+n_back_experiment.push(outro_test_block)
 n_back_experiment.push(post_task_block)
 n_back_experiment.push(end_block)
