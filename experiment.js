@@ -78,8 +78,8 @@ var instructTimeThresh = 0 ///in seconds
 // task specific variables
 var current_trial = 0
 var letters = 'АТРОИ' //АБВГДЕЖЗИКЛМНОП
-var num_blocks = 3 //of each delay
-var num_trials = 20 // 50
+var num_blocks = 1 //of each delay
+var num_trials = 50 // 50
 var num_practice_trials = 10 //25
 var delays = jsPsych.randomization.shuffle([1, 2])
 var control_before = Math.round(Math.random()) //0 control comes before test, 1, after
