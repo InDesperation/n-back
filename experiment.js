@@ -80,7 +80,7 @@ var current_trial = 0
 var letters = 'АТРОИ' //АБВГДЕЖЗИКЛМНОП
 var num_blocks = 1 //of each delay
 var num_trials = 50 // 50
-var num_practice_trials = 10 //25
+var num_practice_trials = 10 //10
 var delays = [1, 2] //jsPsych.randomization.shuffle()
 var control_before = Math.round(Math.random()) //0 control comes before test, 1, after
 var stims = [] //hold stims per block
@@ -180,7 +180,7 @@ var end_block = {
 
 var start_practice_block = {
     type: 'poldrack-text',
-    text: '<div class = centerbox><p class = block-text>Если <strong>новая буква совпадает предыдущей</strong>, тебе нужно сразу нажать ПРОБЕЛ. Если соседние буквы не совпадают, то ничего нажимать не нужно. Например, в последовательности “А … Г … Т … <strong>Т</strong> … О … <strong>О</strong> … М” надо нажимать пробел на вторую Т и вторую О.</p><p class = center-block-text>Нажмите <strong>Enter</strong>, чтобы начать.</p></div>',
+    text: '<div class = centerbox><p class = center-block-text><strong>Задача 1-назад</strong></p><p class = block-text>В этом эксперименте ты увидишь последовательность русских букв, отображаемых по очереди.</p><p class = block-text>Если <strong>новая буква совпадает предыдущей</strong>, тебе нужно сразу нажать ПРОБЕЛ. Если соседние буквы не совпадают, то ничего нажимать не нужно.</p><p class = block-text>Например, в последовательности “А … Г … Т … <strong>Т</strong> … О … <strong>О</strong> … М” надо нажимать пробел на вторую Т и вторую О.</p><p class = block-text>Сейчас будет короткая тренировка, где компьютер тебе подскажет, правильно ты ответил или нет. Затем тренировка закончится и мы начнем саму задачу.</p><p class = center-block-text>Нажмите <strong>Enter</strong>, чтобы начать.</p></div>',
     cont_key: [13],
     data: {
         trial_id: "instruction"
@@ -191,7 +191,7 @@ var start_practice_block = {
 
 var start_practice_2_back_block = {
     type: 'poldrack-text',
-    text: '<div class = centerbox><p class = block-text>Теперь новая задачка! Если <strong>буквы совпадают через одну</strong>, а не соседние, тогда нажимаем ПРОБЕЛ. Если не совпадают, не нажимай ничего.  Например, в последовательности “А … Т … Р … <strong>T</strong> … О … И … <strong>О</strong>” надо нажимать пробел на вторую Т и вторую О.</p><p class = center-block-text>Нажмите <strong>Enter</strong>, чтобы начать.</p></div>',
+    text: '<div class = centerbox><p class = block-text>Теперь новая задачка! Сейчас, если <strong>буквы совпадают ЧЕРЕЗ одну</strong>, а не соседние, тогда нужно нажимать ПРОБЕЛ. Если не совпадают, то не нажимай ничего.</p><p class = block-text>Например, в последовательности “А … Т … Р … <strong>T</strong> … О … И … <strong>О</strong>” надо нажимать пробел на вторую Т и вторую О.</p><p class = block-text>Сейчас будет короткая тренировка, где компьютер тебе подскажет, правильно ты ответил или нет. Затем тренировка закончится и мы начнем саму задачу.</p><p class = center-block-text>Нажмите <strong>Enter</strong>, чтобы начать.</p></div>',
     cont_key: [13],
     data: {
         trial_id: "instruction_2_back"
@@ -211,7 +211,18 @@ var start_test_block = {
     timing_post_trial: 1000
 };
 
-var start_control_block = {
+var end_test_block_1 = {
+    type: 'poldrack-text',
+    data: {
+        trial_id: "test_intro"
+    },
+    timing_response: 180000,
+    text: '<div class = centerbox><p class = center-block-text>Молодец! Задача 1-назад пройдена.</p><p class = center-block-text>Нажмите <strong>Enter</strong>, чтобы продолжить.</p></div>',
+    cont_key: [13],
+    timing_post_trial: 1000
+};
+
+    var start_control_block = {
     type: 'poldrack-text',
     timing_response: 180000,
     data: {
@@ -338,7 +349,7 @@ for (var i = 0; i < num_trials; i++) {
 
 //Set up experiment
 var n_back_experiment = []
-n_back_experiment.push(instruction_node);
+// n_back_experiment.push(instruction_node);
 n_back_experiment.push(start_practice_block)
 n_back_experiment = n_back_experiment.concat(practice_trials)
 
@@ -359,14 +370,14 @@ for (var d = 0; d < delays.length; d++) {
             trial_id: "delay_text"
         },
         timing_response: 180000,
-        text: '<div class = centerbox><p class = block-text>В данном тесте, вы должны нажимать <strong>пробел</strong> каждый раз, когда буква совпадает с той же буквой, что появлялась ранее ' +
-            delay +
-            ' буквы назад. В ином случае, ничего не нажимать</p><p class = center-block-text>Нажмите <strong>Enter</strong>, чтобы начать.</p></div>',
+        text: d === 0
+            ? '<div class = centerbox><p class = block-text>Тренировка пройдена!</p><p class = block-text>Теперь начнем проходить задачу.</p><p class = block-text>Напомню, нажимай ПРОБЕЛ, если <strong>соседние буквы одинаковые</strong>.</p><p class = center-block-text>Нажмите <strong>Enter</strong>, чтобы начать.</p></div>'
+            : '<div class = centerbox><p class = block-text>Тренировка пройдена!</p><p class = block-text>Теперь начнем проходить задачу.</p><p class = block-text>Напомню, нажимай ПРОБЕЛ, если <strong>буквы совпадают ЧЕРЕЗ одну</strong>.</p><p class = center-block-text>Нажмите <strong>Enter</strong>, чтобы начать.</p></div>',
         cont_key: [13]
     };
     n_back_experiment.push(start_delay_block)
     for (var b = 0; b < num_blocks; b++) {
-        n_back_experiment.push(start_test_block)
+        // n_back_experiment.push(start_test_block)
         var target = ''
         stims = []
         for (var i = 0; i < num_trials; i++) {
@@ -394,6 +405,9 @@ for (var d = 0; d < delays.length; d++) {
             };
             n_back_experiment.push(test_block)
         }
+    }
+    if (d === 0) {
+        n_back_experiment.push(end_test_block_1)
     }
     n_back_experiment.push(attention_node)
 }
