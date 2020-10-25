@@ -81,7 +81,7 @@ var letters = 'АТРОИ' //АБВГДЕЖЗИКЛМНОП
 var num_blocks = 1 //of each delay
 var num_trials = 50 // 50
 var num_practice_trials = 10 //25
-var delays = jsPsych.randomization.shuffle([1, 2])
+var delays = [1, 2] //jsPsych.randomization.shuffle()
 var control_before = Math.round(Math.random()) //0 control comes before test, 1, after
 var stims = [] //hold stims per block
 
@@ -172,7 +172,7 @@ var end_block = {
         trial_id: "end",
         exp_id: 'n_back'
     },
-    text: '<div class = centerbox><p class = center-block-text>Thanks for completing this task!</p><p class = center-block-text>Press <strong>enter</strong> to begin.</p></div>',
+    text: '<div class = centerbox><p class = center-block-text>Спасибо за участие!</p><p class = center-block-text>Нажмите <strong>Enter</strong>, чтобы продолжить.</p></div>',
     cont_key: [13],
     timing_post_trial: 0
 };
@@ -180,10 +180,21 @@ var end_block = {
 
 var start_practice_block = {
     type: 'poldrack-text',
-    text: '<div class = centerbox><p class = block-text>Начнем с разминки. Твоя задача - ответить, нажав клавишу пробел, когда буква совпадает с той же буквой, которая появлялась ранее 1 буквы назад, в противном случае ничего нажимать не нужно.</p><p class = center-block-text>Во время разминки вы будете видеть корректность ответа. Во время реального теста, данный информации не будет. Нажмите <strong>Enter</strong>, чтобы начать.</p></div>',
+    text: '<div class = centerbox><p class = block-text>Начнем с разминки. Твоя задача - ответить, нажав клавишу пробел, когда буква совпадает с той же буквой, которая появлялась ранее <strong>1 буквы назад</strong>, в противном случае ничего нажимать не нужно.</p><p class = center-block-text>Во время разминки вы будете видеть корректность ответа. Во время реального теста, данный информации не будет. Нажмите <strong>Enter</strong>, чтобы начать.</p></div>',
     cont_key: [13],
     data: {
         trial_id: "instruction"
+    },
+    timing_response: 180000,
+    timing_post_trial: 1000
+};
+
+var start_practice_2_back_block = {
+    type: 'poldrack-text',
+    text: '<div class = centerbox><p class = block-text>Чуть усложним задачу и проведем еще одну разминку. Теперь твоя задача - ответить, нажав клавишу пробел, когда буква совпадает с той же буквой, которая появлялась ранее на <strong>2 буквы назад</strong>, в противном случае ничего нажимать не нужно.</p><p class = center-block-text>Во время разминки вы будете видеть корректность ответа. Во время реального теста, данный информации не будет. Нажмите <strong>Enter</strong>, чтобы начать.</p></div>',
+    cont_key: [13],
+    data: {
+        trial_id: "instruction_2_back"
     },
     timing_response: 180000,
     timing_post_trial: 1000
@@ -261,6 +272,46 @@ for (var i = 0; i < (num_practice_trials); i++) {
     practice_trials.push(practice_block)
 }
 
+//Setup 2-back practice
+practice_trials_2_back = []
+stims = []
+for (var i = 0; i < (num_practice_trials); i++) {
+    target = ''
+    stim = randomDraw(letters)
+    stims.push(stim)
+    if (i >= 2) {
+        target = stims[i - 2]
+    }
+    if (stim == target) {
+        correct_response = 32
+    } else {
+        correct_response = -1
+    }
+    var practice_block_2_back = {
+        type: 'poldrack-categorize',
+        is_html: true,
+        stimulus: '<div class = centerbox><div class = center-text>' + stim + '</div></div>',
+        key_answer: correct_response,
+        data: {
+            trial_id: "stim",
+            exp_stage: "practice",
+            stim: stim,
+            target: target
+        },
+        correct_text: '<div class = centerbox><div style="color:green;font-size:60px"; class = center-text>Верно!</div></div>',
+        incorrect_text: '<div class = centerbox><div style="color:red;font-size:60px"; class = center-text>Неверно</div></div>',
+        timeout_message: '<div class = centerbox><div style="font-size:60px" class = center-text>Respond Faster!</div></div>',
+        // timing_feedback_duration: 500,
+        show_stim_with_feedback: false,
+        choices: [32],
+        show_feedback_on_timeout: true,
+        timing_stim: 500,
+        timing_response: 2000,
+        timing_post_trial: 500
+    };
+    practice_trials_2_back.push(practice_block_2_back)
+}
+
 //Define control (0-back) block
 var control_trials = []
 for (var i = 0; i < num_trials; i++) {
@@ -296,6 +347,11 @@ n_back_experiment = n_back_experiment.concat(practice_trials)
 // 	n_back_experiment = n_back_experiment.concat(control_trials)
 // }
 for (var d = 0; d < delays.length; d++) {
+    if (d === 1) {
+        n_back_experiment.push(start_practice_2_back_block)
+        n_back_experiment = n_back_experiment.concat(practice_trials_2_back)
+    }
+
     var delay = delays[d]
     var start_delay_block = {
         type: 'poldrack-text',
