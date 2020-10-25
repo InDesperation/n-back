@@ -180,7 +180,7 @@ var end_block = {
 
 var start_practice_block = {
     type: 'poldrack-text',
-    text: '<div class = centerbox><p class = block-text>Начнем с разминки. Твоя задача - ответить, нажав клавишу пробел, когда буква совпадает с той же буквой, которая появлялась ранее <strong>1 буквы назад</strong>, в противном случае ничего нажимать не нужно.</p><p class = center-block-text>Во время разминки вы будете видеть корректность ответа. Во время реального теста, данный информации не будет. Нажмите <strong>Enter</strong>, чтобы начать.</p></div>',
+    text: '<div class = centerbox><p class = block-text>Если <strong>новая буква совпадает предыдущей</strong>, тебе нужно сразу нажать ПРОБЕЛ. Если соседние буквы не совпадают, то ничего нажимать не нужно. Например, в последовательности “А … Г … Т … <strong>Т</strong> … О … <strong>О</strong> … М” надо нажимать пробел на вторую Т и вторую О.</p><p class = center-block-text>Нажмите <strong>Enter</strong>, чтобы начать.</p></div>',
     cont_key: [13],
     data: {
         trial_id: "instruction"
@@ -191,7 +191,7 @@ var start_practice_block = {
 
 var start_practice_2_back_block = {
     type: 'poldrack-text',
-    text: '<div class = centerbox><p class = block-text>Чуть усложним задачу и проведем еще одну разминку. Теперь твоя задача - ответить, нажав клавишу пробел, когда буква совпадает с той же буквой, которая появлялась ранее на <strong>2 буквы назад</strong>, в противном случае ничего нажимать не нужно.</p><p class = center-block-text>Во время разминки вы будете видеть корректность ответа. Во время реального теста, данный информации не будет. Нажмите <strong>Enter</strong>, чтобы начать.</p></div>',
+    text: '<div class = centerbox><p class = block-text>Теперь новая задачка! Если <strong>буквы совпадают через одну</strong>, а не соседние, тогда нажимаем ПРОБЕЛ. Если не совпадают, не нажимай ничего.  Например, в последовательности “А … Т … Р … <strong>T</strong> … О … И … <strong>О</strong>” надо нажимать пробел на вторую Т и вторую О.</p><p class = center-block-text>Нажмите <strong>Enter</strong>, чтобы начать.</p></div>',
     cont_key: [13],
     data: {
         trial_id: "instruction_2_back"
